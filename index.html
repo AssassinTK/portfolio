@@ -21,8 +21,13 @@ nav{position:sticky;top:0;z-index:20;background:rgba(246,242,234,.92);backdrop-f
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:52px}
 nav b{font-size:16px;letter-spacing:.08em}
 nav div a{margin-left:20px;font-size:14px;text-decoration:none;color:var(--sub)}
-nav div a:hover{color:var(--tide)}
+nav div a:hover,nav div a.on{color:var(--tide)}
+nav div a.on{font-weight:600}
 section{padding:72px 0;border-bottom:1px solid var(--line)}
+[id]{scroll-margin-top:68px}
+button{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--tide2);outline-offset:2px}
+.flash{outline:3px solid var(--ochre);outline-offset:5px;border-radius:var(--r);transition:outline-color .3s}
 h1{font-size:clamp(34px,6vw,56px);line-height:1.25;letter-spacing:.02em}
 h2{font-size:28px;margin-bottom:8px;letter-spacing:.02em}
 .eyebrow{font-size:13px;letter-spacing:.18em;color:var(--ochre);margin-bottom:12px;font-weight:600}
@@ -30,13 +35,19 @@ h2{font-size:28px;margin-bottom:8px;letter-spacing:.02em}
 .hero{padding:96px 0 72px}
 .hero .lead{margin-top:20px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
-.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 14px;font-size:13px;color:var(--sub)}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 16px;font:inherit;font-size:13px;line-height:1.6;color:var(--sub);cursor:pointer;transition:border-color .15s,color .15s,transform .1s}
+.chip:hover{border-color:var(--tide);color:var(--tide)}
+.chip:active{transform:scale(.96)}
 .chip.main{background:var(--tide);color:#fff;border-color:var(--tide)}
+.chip.main:hover{background:var(--tide2);color:#fff}
 .bio{display:grid;grid-template-columns:1fr;gap:18px;margin-top:28px;max-width:720px}
 .bio p{font-size:16px}
 .bio em{font-style:normal;color:var(--tide);font-weight:600}
 .threads{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:36px}
-.thread{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.thread{display:block;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;transition:border-color .15s,transform .1s}
+.thread:hover{border-color:var(--tide)}
+.thread:active{transform:scale(.985)}
+.thread small{display:block;margin-top:8px;color:var(--ochre);font-size:12px}
 .thread h3{font-size:16px;color:var(--tide);margin-bottom:4px}
 .thread p{font-size:14px;color:var(--sub);line-height:1.7}
 
@@ -73,7 +84,10 @@ select,input[type=date]{font-family:inherit;font-size:14px;padding:6px 10px;bord
 .alert{margin-top:12px;background:#06c755;color:#fff;border-radius:14px;padding:10px 14px;font-size:13px;line-height:1.6;display:none}
 .alert.on{display:block}
 .parts{display:flex;gap:10px;flex-wrap:wrap}
-.part{flex:1;min-width:120px;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;font-size:13px}
+.part{flex:1;min-width:120px;text-align:left;font:inherit;color:inherit;line-height:1.7;cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;font-size:13px;transition:border-color .15s}
+.part:hover{border-color:var(--tide)}
+.part[aria-pressed=true]{border-color:var(--tide);box-shadow:0 0 0 1px var(--tide) inset}
+.pdetail{font-size:13px;color:var(--sub);margin-top:10px;min-height:3.4em;line-height:1.7}
 .part b{display:block;font-size:14px;margin-bottom:2px}
 footer{padding:48px 0 64px;color:var(--sub);font-size:13px}
 
@@ -93,8 +107,8 @@ footer{padding:48px 0 64px;color:var(--sub);font-size:13px}
   <h1>把現場的事，<br>變成不靠個人硬撐的機制。</h1>
   <p class="lead">園藝系畢業，餐飲外場管理出身。我最擅長的是營運：讓每個人知道該做什麼、做完有紀錄、出問題有人接手。</p>
   <div class="chips">
-    <span class="chip main">營運（主線）</span>
-    <span class="chip">軟體</span><span class="chip">硬體與 IoT</span><span class="chip">資料分析</span><span class="chip">實體製造</span>
+    <button type="button" class="chip main" data-go="threads">營運（主線）</button>
+    <button type="button" class="chip" data-go="phone">軟體</button><button type="button" class="chip" data-go="c-label,c-cold">硬體與 IoT</button><button type="button" class="chip" data-go="c-data">資料分析</button><button type="button" class="chip" data-go="c-3d">實體製造</button>
   </div>
 </div></header>
 
@@ -107,10 +121,10 @@ footer{padding:48px 0 64px;color:var(--sub);font-size:13px}
     <p>營運之外，我的能力橫跨幾個領域：軟體（LINE 機器人、自動化流程）、硬體與 IoT（冷鏈溫度監測、ESP32 串接標籤機列印備料標籤）、資料（人流與訂位分析）、實體製造（用 3D 建模與列印設計桌上立牌、冰箱罐道與設備保護殼）。這些都來自同一個習慣：現場哪裡卡住，就先弄懂它，再自己動手補上。從園藝到餐飲，再到系統與硬體，我每次轉換領域，靠的都是這個方法。</p>
     <p>我相信好的營運，是讓每個人都知道該做什麼、做完有紀錄、出問題有人接手。我也習慣授權一線自行判斷，把精力留給真正需要拍板的事。</p>
   </div>
-  <div class="threads">
-    <div class="thread"><h3>1. 先看懂現場</h3><p>流程怎麼走、誰在哪一步卡住，先弄清楚再動手。</p></div>
-    <div class="thread"><h3>2. 用機制固定下來</h3><p>能用系統強制的步驟（例如收貨一定拍照），就不靠提醒。</p></div>
-    <div class="thread"><h3>3. 人不在也能跑</h3><p>設定門檻與通知，超過才找人，授權一線決定。</p></div>
+  <div class="threads" id="threads">
+    <button type="button" class="thread" data-act="t1"><h3>1. 先看懂現場</h3><p>流程怎麼走、誰在哪一步卡住，先弄清楚再動手。</p><small>看示範：今日概況 ↓</small></button>
+    <button type="button" class="thread" data-act="t2"><h3>2. 用機制固定下來</h3><p>能用系統強制的步驟（例如收貨一定拍照），就不靠提醒。</p><small>看示範：收貨驗收 ↓</small></button>
+    <button type="button" class="thread" data-act="t3"><h3>3. 人不在也能跑</h3><p>設定門檻與通知，超過才找人，授權一線決定。</p><small>看示範：冷鏈超標通知 ↓</small></button>
   </div>
 </div></section>
 
@@ -121,7 +135,7 @@ footer{padding:48px 0 64px;color:var(--sub);font-size:13px}
   <div class="stage">
     <div class="points" id="points"></div>
     <div class="phonewrap">
-      <div class="phone">
+      <div class="phone" id="phone">
         <div class="phead">beach-ops <span>DEMO・虛構資料・可操作</span><a href="ops/" target="_blank" rel="noopener">全螢幕開啟</a></div>
         <iframe id="opsframe" src="ops/" title="beach-ops 營運系統示範" loading="lazy"></iframe>
       </div>
@@ -135,7 +149,7 @@ footer{padding:48px 0 64px;color:var(--sub);font-size:13px}
   <p class="lead">都是現場某個地方卡住時，順手補上的工具。</p>
   <div class="side">
 
-    <div class="card">
+    <div class="card" id="c-label">
       <div class="tag">硬體與 IoT</div>
       <h3>ESP32 備料標籤列印</h3>
       <p class="d">備料單確認後，由 ESP32 驅動標籤機出標籤。效期依品項保存天數自動算出。</p>
@@ -143,7 +157,7 @@ footer{padding:48px 0 64px;color:var(--sub);font-size:13px}
       <div class="label" id="label"></div>
     </div>
 
-    <div class="card">
+    <div class="card" id="c-cold">
       <div class="tag">硬體與 IoT</div>
       <h3>冷鏈溫度監測</h3>
       <p class="d">感測器每幾分鐘回報一次，超過門檻就用 LINE 通知。按下按鈕模擬冰箱門沒關。</p>
@@ -155,26 +169,28 @@ footer{padding:48px 0 64px;color:var(--sub);font-size:13px}
       <div class="alert" id="alert"></div>
     </div>
 
-    <div class="card">
+    <div class="card" id="c-data">
       <div class="tag">資料</div>
       <h3>訂位與營收分析</h3>
       <p class="d">整理五年訂位與營收資料，用來看超訂後取消的比例，以及哪些時段的產能沒被用滿。</p>
       <div class="parts">
-        <div class="part"><b>週末</b>超訂 → 取消<br>是最大的漏水點</div>
-        <div class="part"><b>平日</b>空產能<br>才是可調整的槓桿</div>
+        <button type="button" class="part" aria-pressed="false" data-d="訂位超過座位數、之後又取消，來不及補上的位子就變成空位。"><b>週末</b>超訂 → 取消<br>是最大的漏水點</button>
+        <button type="button" class="part" aria-pressed="false" data-d="產能沒被用滿的時段，才是可以調整、補進客人的空間。"><b>平日</b>空產能<br>才是可調整的槓桿</button>
       </div>
+      <p class="pdetail" aria-live="polite">點上面一個，看說明。</p>
       <p class="note">此處僅說明方向，不公開任何真實數據。</p>
     </div>
 
-    <div class="card">
+    <div class="card" id="c-3d">
       <div class="tag">實體製造</div>
       <h3>3D 建模與列印</h3>
       <p class="d">遇到現場找不到合適的東西，就自己設計。用程式量測輸出的模型尺寸，確認與設計相符。</p>
       <div class="parts">
-        <div class="part"><b>桌上立牌</b>雙面三角，插片可抽換</div>
-        <div class="part"><b>冰箱罐道</b>讓罐裝飲料依序滑出</div>
-        <div class="part"><b>設備保護殼</b>參數化尺寸，含握把與支架</div>
+        <button type="button" class="part" aria-pressed="false" data-d="雙面三角立牌，中間的插片可以抽換內容；做了四種範本來比較。"><b>桌上立牌</b>雙面三角，插片可抽換</button>
+        <button type="button" class="part" aria-pressed="false" data-d="24 罐的蛇形通道。斜度太小罐子會卡住，所以用程式量測輸出的模型來確認。"><b>冰箱罐道</b>讓罐裝飲料依序滑出</button>
+        <button type="button" class="part" aria-pressed="false" data-d="參數化尺寸，換機型只改數字；含握把與支架，列印前用程式讀回量測。"><b>設備保護殼</b>參數化尺寸，含握把與支架</button>
       </div>
+      <p class="pdetail" aria-live="polite">點上面一個，看說明。</p>
     </div>
 
   </div>
@@ -248,6 +264,39 @@ const LB=[['洋蔥絲',3,'備料站・內場'],['醬汁（蒜香奶油）',5,'�
   draw();
 })();
 
+
+/* ---------- 互動：標籤跳轉、做法卡、小方塊、導覽高亮 ---------- */
+const calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+function jump(ids){
+  const els=ids.map(i=>document.getElementById(i));
+  els[0].scrollIntoView({behavior:calm?'auto':'smooth',block:'center'});
+  els.forEach(e=>{e.classList.add('flash');setTimeout(()=>e.classList.remove('flash'),1800)});
+}
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');
+  if(g){jump(g.dataset.go.split(','));return}
+  const t=e.target.closest('[data-act]');
+  if(t){
+    if(t.dataset.act==='t1'){drive(0);jump(['phone'])}
+    if(t.dataset.act==='t2'){drive(2);jump(['phone'])}
+    if(t.dataset.act==='t3'){jump(['c-cold']);$('#openDoor').click()}
+    return;
+  }
+  const p=e.target.closest('.part[data-d]');
+  if(p){
+    const box=p.closest('.card'),on=p.getAttribute('aria-pressed')==='true';
+    box.querySelectorAll('.part').forEach(x=>x.setAttribute('aria-pressed','false'));
+    if(!on)p.setAttribute('aria-pressed','true');
+    box.querySelector('.pdetail').textContent=on?'點上面一個，看說明。':p.dataset.d;
+  }
+});
+(function(){
+  const links=[...document.querySelectorAll('nav a[href^="#"]')];
+  const io=new IntersectionObserver(es=>es.forEach(en=>{
+    if(en.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id));
+  }),{rootMargin:'-45% 0px -50% 0px'});
+  links.forEach(a=>io.observe(document.querySelector(a.getAttribute('href'))));
+})();
 </script>
 </body>
 </html>

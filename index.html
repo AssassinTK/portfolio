@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; frame-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<title>品燊｜營運 × 系統</title>
+<meta name="description" content="園藝系畢業、餐飲營運出身。把現場的事變成不靠個人硬撐的機制。內附 beach-ops 營運系統互動 demo（全為虛構資料）。">
+<style>
+:root{
+  --ink:#1c2a28;--sub:#58655f;--line:#ddd6c8;--bg:#f6f2ea;--card:#fffdf8;
+  --tide:#1f4a45;--tide2:#2f6b63;--ochre:#b8893c;--coral:#c4553f;--ok:#3d7a4f;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:var(--bg);line-height:1.8;-webkit-text-size-adjust:100%}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:20;background:rgba(246,242,234,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:52px}
+nav b{font-size:16px;letter-spacing:.08em}
+nav div a{margin-left:20px;font-size:14px;text-decoration:none;color:var(--sub)}
+nav div a:hover{color:var(--tide)}
+section{padding:72px 0;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.25;letter-spacing:.02em}
+h2{font-size:28px;margin-bottom:8px;letter-spacing:.02em}
+.eyebrow{font-size:13px;letter-spacing:.18em;color:var(--ochre);margin-bottom:12px;font-weight:600}
+.lead{color:var(--sub);font-size:17px;max-width:640px}
+.hero{padding:96px 0 72px}
+.hero .lead{margin-top:20px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:4px 14px;font-size:13px;color:var(--sub)}
+.chip.main{background:var(--tide);color:#fff;border-color:var(--tide)}
+.bio{display:grid;grid-template-columns:1fr;gap:18px;margin-top:28px;max-width:720px}
+.bio p{font-size:16px}
+.bio em{font-style:normal;color:var(--tide);font-weight:600}
+.threads{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:36px}
+.thread{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.thread h3{font-size:16px;color:var(--tide);margin-bottom:4px}
+.thread p{font-size:14px;color:var(--sub);line-height:1.7}
+
+/* 營運 demo */
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:40px;margin-top:36px;align-items:start}
+.points{display:flex;flex-direction:column;gap:14px}
+.point{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;cursor:pointer;transition:border-color .15s}
+.point.on{border-color:var(--tide);box-shadow:0 0 0 1px var(--tide) inset}
+.point h3{font-size:16px}
+.point p{font-size:14px;color:var(--sub);margin-top:2px;line-height:1.7}
+.point small{display:block;margin-top:6px;color:var(--ochre);font-size:12px}
+.phone{width:392px;max-width:100%;background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 18px 40px rgba(31,74,69,.12);display:flex;flex-direction:column;height:640px}
+.phead{background:var(--tide);color:#fff;padding:12px 18px;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.phead span{font-size:12px;opacity:.8}
+.phead a{color:#fff;font-size:12px;text-decoration:underline;white-space:nowrap}
+.phone iframe{flex:1;width:100%;border:0;background:#f7f9fb}
+.note{font-size:12px;color:var(--sub);margin-top:10px}
+.btn{border:1px solid var(--tide);background:var(--tide);color:#fff;border-radius:10px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+.btn.ghost{background:#fff;color:var(--tide)}
+.btn.sm{padding:4px 10px;font-size:12px}
+
+/* 支線 */
+.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:36px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.card h3{font-size:18px;margin-bottom:2px}
+.card .tag{font-size:12px;color:var(--ochre);letter-spacing:.1em}
+.card p.d{font-size:14px;color:var(--sub);margin:6px 0 14px;line-height:1.7}
+.label{border:2px solid var(--ink);border-radius:8px;padding:12px 14px;background:#fff;font-size:14px;line-height:1.6;max-width:300px}
+.label h4{font-size:20px;margin-bottom:2px}
+.label div{display:flex;justify-content:space-between}
+.label b.exp{color:var(--coral)}
+select,input[type=date]{font-family:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;margin:2px 6px 8px 0}
+.chart{width:100%;height:auto;display:block;margin-top:6px}
+.alert{margin-top:12px;background:#06c755;color:#fff;border-radius:14px;padding:10px 14px;font-size:13px;line-height:1.6;display:none}
+.alert.on{display:block}
+.parts{display:flex;gap:10px;flex-wrap:wrap}
+.part{flex:1;min-width:120px;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;font-size:13px}
+.part b{display:block;font-size:14px;margin-bottom:2px}
+footer{padding:48px 0 64px;color:var(--sub);font-size:13px}
+
+@media(max-width:900px){
+  .stage,.side{grid-template-columns:minmax(0,1fr)}
+  .phone{margin:0 auto;width:100%;max-width:392px}
+  nav div a{margin-left:12px}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap"><b>品燊</b><div><a href="#about">關於我</a><a href="#ops">營運系統</a><a href="#side">支線</a></div></div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow">OPERATIONS × SYSTEMS</div>
+  <h1>把現場的事，<br>變成不靠個人硬撐的機制。</h1>
+  <p class="lead">園藝系畢業，餐飲外場管理出身。我最擅長的是營運：讓每個人知道該做什麼、做完有紀錄、出問題有人接手。</p>
+  <div class="chips">
+    <span class="chip main">營運（主線）</span>
+    <span class="chip">軟體</span><span class="chip">硬體與 IoT</span><span class="chip">資料分析</span><span class="chip">實體製造</span>
+  </div>
+</div></header>
+
+<section id="about"><div class="wrap">
+  <div class="eyebrow">ABOUT</div>
+  <h2>關於我</h2>
+  <div class="bio">
+    <p>我是品燊，畢業於文化大學園藝系，專注植物與空間的關係。畢業後進入餐飲業，從外場管理做到活動統籌，包場佈置、動線設計與顧客體驗整合都由我經手。在高壓現場待得夠久，我最擅長的是<em>營運</em>：把一間店每天的事，變成不靠個人硬撐、人不在也能穩定運作的機制。</p>
+    <p>我的做法是先看懂現場流程，再用系統固定下來。我自建 <em>beach-ops</em> 營運系統，取代原本的 AppSheet，涵蓋叫貨、收貨驗收強制拍照、食材耗損紀錄、產品與菜單成本核對、包場套餐管理，以及依訂位與包場量推算人力的自動排班。叫貨、包場與每日任務會即時通知到對應的人，現場不必靠口頭傳話。我也整理過五年的訂位與營收資料，找出週末超訂後取消造成的漏水，以及平日空產能這個可調整的槓桿，讓決策有數據可以依靠。</p>
+    <p>營運之外，我的能力橫跨幾個領域：軟體（LINE 機器人、自動化流程）、硬體與 IoT（冷鏈溫度監測、ESP32 串接標籤機列印備料標籤）、資料（人流與訂位分析）、實體製造（用 3D 建模與列印設計桌上立牌、冰箱罐道與設備保護殼）。這些都來自同一個習慣：現場哪裡卡住，就先弄懂它，再自己動手補上。從園藝到餐飲，再到系統與硬體，我每次轉換領域，靠的都是這個方法。</p>
+    <p>我相信好的營運，是讓每個人都知道該做什麼、做完有紀錄、出問題有人接手。我也習慣授權一線自行判斷，把精力留給真正需要拍板的事。</p>
+  </div>
+  <div class="threads">
+    <div class="thread"><h3>1. 先看懂現場</h3><p>流程怎麼走、誰在哪一步卡住，先弄清楚再動手。</p></div>
+    <div class="thread"><h3>2. 用機制固定下來</h3><p>能用系統強制的步驟（例如收貨一定拍照），就不靠提醒。</p></div>
+    <div class="thread"><h3>3. 人不在也能跑</h3><p>設定門檻與通知，超過才找人，授權一線決定。</p></div>
+  </div>
+</div></section>
+
+<section id="ops"><div class="wrap">
+  <div class="eyebrow">MAIN LINE</div>
+  <h2>beach-ops 營運系統</h2>
+  <p class="lead">下面是可以實際操作的示範版。資料全為虛構，與任何真實店家、廠商或人員無關。</p>
+  <div class="stage">
+    <div class="points" id="points"></div>
+    <div class="phonewrap">
+      <div class="phone">
+        <div class="phead">beach-ops <span>DEMO・虛構資料・可操作</span><a href="ops/" target="_blank" rel="noopener">全螢幕開啟</a></div>
+        <iframe id="opsframe" src="ops/" title="beach-ops 營運系統示範" loading="lazy"></iframe>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="side"><div class="wrap">
+  <div class="eyebrow">SIDE LINES</div>
+  <h2>支線能力</h2>
+  <p class="lead">都是現場某個地方卡住時，順手補上的工具。</p>
+  <div class="side">
+
+    <div class="card">
+      <div class="tag">硬體與 IoT</div>
+      <h3>ESP32 備料標籤列印</h3>
+      <p class="d">備料單確認後，由 ESP32 驅動標籤機出標籤。效期依品項保存天數自動算出。</p>
+      <select id="lbItem"></select><input type="date" id="lbDate">
+      <div class="label" id="label"></div>
+    </div>
+
+    <div class="card">
+      <div class="tag">硬體與 IoT</div>
+      <h3>冷鏈溫度監測</h3>
+      <p class="d">感測器每幾分鐘回報一次，超過門檻就用 LINE 通知。按下按鈕模擬冰箱門沒關。</p>
+      <svg class="chart" id="chart" viewBox="0 0 320 130" role="img" aria-label="冷藏溫度折線圖"></svg>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn sm" id="openDoor">模擬門沒關</button>
+        <button class="btn sm ghost" id="closeDoor">恢復正常</button>
+      </div>
+      <div class="alert" id="alert"></div>
+    </div>
+
+    <div class="card">
+      <div class="tag">資料</div>
+      <h3>訂位與營收分析</h3>
+      <p class="d">整理五年訂位與營收資料，用來看超訂後取消的比例，以及哪些時段的產能沒被用滿。</p>
+      <div class="parts">
+        <div class="part"><b>週末</b>超訂 → 取消<br>是最大的漏水點</div>
+        <div class="part"><b>平日</b>空產能<br>才是可調整的槓桿</div>
+      </div>
+      <p class="note">此處僅說明方向，不公開任何真實數據。</p>
+    </div>
+
+    <div class="card">
+      <div class="tag">實體製造</div>
+      <h3>3D 建模與列印</h3>
+      <p class="d">遇到現場找不到合適的東西，就自己設計。用程式量測輸出的模型尺寸，確認與設計相符。</p>
+      <div class="parts">
+        <div class="part"><b>桌上立牌</b>雙面三角，插片可抽換</div>
+        <div class="part"><b>冰箱罐道</b>讓罐裝飲料依序滑出</div>
+        <div class="part"><b>設備保護殼</b>參數化尺寸，含握把與支架</div>
+      </div>
+    </div>
+
+  </div>
+</div></section>
+
+<footer><div class="wrap">© 品燊　本站示範資料皆為虛構。</div></footer>
+
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const fmt=n=>n.toLocaleString('en-US');
+
+/* ---------- 營運示範：iframe 內是 beach-ops 真實介面（資料為虛構） ---------- */
+const POINTS=[
+  ['lead','mdash','今日概況','一個畫面看到待驗收、異常與任務進度。','試試：點進任一張卡片'],
+  ['lead','worder','叫貨：先選廠商，再選品項','叫貨當下就看到庫存，庫存與叫貨量不合理時會即時標示。','試試：點一家廠商，加幾個品項'],
+  ['lead','recvstock','收貨驗收：強制拍照','每個品項都要拍照才能完成驗收，數量不對可以回報異常。','試試：點進一張待驗收的單'],
+  ['staff','routine','每日任務','任務獨立指派給人，做完就是做完，不綁班別。','以「一般員工」身分檢視']
+];
+let cur=0;
+const frame=$("#opsframe");
+function drive(i){
+  cur=i;
+  const [who,page]=POINTS[i];
+  const w=frame.contentWindow;
+  try{ w.switchWho(who); w.go(page); }catch(e){}
+  paint();
+}
+function paint(){
+  $('#points').innerHTML=POINTS.map((p,i)=>`<div class="point ${i===cur?'on':''}" data-i="${i}"><h3>${p[2]}</h3><p>${p[3]}</p><small>${p[4]}</small></div>`).join('');
+}
+$('#points').addEventListener('click',e=>{const el=e.target.closest('[data-i]');if(el)drive(+el.dataset.i)});
+frame.addEventListener('load',()=>drive(cur));
+paint();
+
+
+/* ---------- 支線：標籤 ---------- */
+const LB=[['洋蔥絲',3,'備料站・內場'],['醬汁（蒜香奶油）',5,'醬料站・內場'],['切片檸檬',2,'吧台'],['鮮蝦（去殼）',1,'炸台・內場']];
+(function(){
+  const sel=$('#lbItem'),dt=$('#lbDate');
+  sel.innerHTML=LB.map((l,i)=>`<option value="${i}">${l[0]}</option>`).join('');
+  dt.value=new Date().toISOString().slice(0,10);
+  function draw(){
+    const l=LB[+sel.value],d=new Date(dt.value||Date.now()),e=new Date(d);e.setDate(e.getDate()+l[1]);
+    const f=x=>(x.getMonth()+1)+'/'+x.getDate();
+    $('#label').innerHTML=`<h4>${l[0]}</h4><div><span>備料日</span><b>${f(d)}</b></div><div><span>效期</span><b class="exp">${f(e)}（${l[1]} 天）</b></div><div><span>站別</span><span>${l[2]}</span></div>`;
+  }
+  sel.onchange=draw;dt.onchange=draw;draw();
+})();
+
+/* ---------- 支線：冷鏈 ---------- */
+(function(){
+  const N=48,TH=7;let open=false,tick=0;
+  const base=[];for(let i=0;i<N;i++)base.push(3.2+Math.sin(i/5)*0.6+(i%7)*0.05);
+  let data=base.slice();
+  function draw(){
+    const W=320,H=130,pl=28,pb=18,pt=8,x=i=>pl+i*(W-pl-6)/(N-1),y=v=>pt+(12-v)/(12-0)*(H-pt-pb);
+    const pts=data.map((v,i)=>x(i).toFixed(1)+','+y(v).toFixed(1)).join(' ');
+    const hot=data[N-1]>TH;
+    $('#chart').innerHTML=`<line x1="${pl}" x2="${W-6}" y1="${y(TH)}" y2="${y(TH)}" stroke="#c4553f" stroke-dasharray="4 3"/>
+      <text x="${pl}" y="${y(TH)-3}" font-size="9" fill="#c4553f">警戒 ${TH}°C</text>
+      ${[0,4,8,12].map(v=>`<text x="2" y="${y(v)+3}" font-size="9" fill="#58655f">${v}°</text><line x1="${pl}" x2="${W-6}" y1="${y(v)}" y2="${y(v)}" stroke="#eee7d8"/>`).join('')}
+      <polyline points="${pts}" fill="none" stroke="${hot?'#c4553f':'#2f6b63'}" stroke-width="2"/>`;
+    const a=$('#alert');
+    if(hot){a.classList.add('on');a.innerHTML='【冷藏 1 號】溫度 '+data[N-1].toFixed(1)+'°C，已超過 '+TH+'°C。請確認門是否關好。'}else a.classList.remove('on');
+  }
+  setInterval(()=>{tick++;data.shift();const last=data[data.length-1];
+    data.push(open?Math.min(11.5,last+0.9):Math.max(3.4,last-0.8)+(Math.sin(tick/3)*0.08));draw()},900);
+  $('#openDoor').onclick=()=>{open=true};
+  $('#closeDoor').onclick=()=>{open=false};
+  draw();
+})();
+
+</script>
+</body>
+</html>
